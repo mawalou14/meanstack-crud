@@ -1,4 +1,4 @@
-require('dotenv').config();
+
 const bodyParser = require('body-parser');
 const express = require('express');
 
@@ -19,6 +19,6 @@ app.use(errorHandler)
 connectDb()
 .then(() => {
     console.log('db connection succeeded');
-    app.listen(process.env.PORT, ()=> console.log('Server started at ' + process.env.PORT));
+    app.listen(3000, ()=> console.log('Server started at ' + 3000));
 })
 .catch(err => console.log(err));
