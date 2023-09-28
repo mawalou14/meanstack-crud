@@ -5,12 +5,14 @@ const express = require('express');
 // local imports
 const connectDb = require('./db.js');
 const employeeRoutes = require('./controllers/employee.controller.js');
+const { errorHandler } = require('./midlewares')
 
 const app = express();
 
 // Middleware
 app.use(bodyParser.json());
 app.use('/api/employees', employeeRoutes);
+app.use(errorHandler)
 
 
 

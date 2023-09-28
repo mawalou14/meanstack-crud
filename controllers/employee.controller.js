@@ -1,39 +1,57 @@
 
 const express = require('express');
 const router = express.Router();
-const ObjectId = require('mongoose').Types.ObjectId;
 
 const Employee = require('../models/employee.model');
+const { generateCrudMethods } = require('../services');
+const employeeCrud = generateCrudMethods(Employee);
+const { validateDbId, raiseRecord404Error } = require('../midlewares');
 
-router.get('/', (req, res) => {
-    Employee.find()
+router.get('/', (req, res, next) => {
+    employeeCrud.getAll()
     .then(data => res.send(data))
-    .catch((err) => console.log(err))
+    .catch((err) => next(err))
 });
 
 
-router.get('/:id', (req, res) => {
-    if(ObjectId.isValid(req.params.id) == false)
-        res.status(400).json({
-            error: 'Given Object id is not valid.'
-        })
-    else
-    Employee.findById(req.params.id)
+router.get('/:id', validateDbId, (req, res, next) => {
+    
+    employeeCrud.getById(req.params.id)
     .then(data => {
         if(data)
         res.send(data)
     else
-        res.status(404).json({
-            error: 'No record with the given _id :' + req.params.id
-        })
+        raiseRecord404Error(req, res);
     })
-    .catch((err) => console.log(err))
+    .catch((err) => next(err))
 });
 
-router.post('/', (req, res) => {
-    Employee.create(req.body)
+router.post('/', (req, res, next) => {
+    employeeCrud.create(req.body)
     .then(data => res.status(201).json(data))
-    .catch(err => console.log(err))
+    .catch(err => next(err))
+})
+
+router.put('/:id', validateDbId, (req, res, next) => {
+    employeeCrud.update(req.params.id, req.body)
+    .then(data => {
+        if(data)
+        res.send(data)
+    else
+        raiseRecord404Error(req, res);
+    })
+    .catch((err) => next(err))
+})
+
+router.delete('/:id', validateDbId, (req, res, next) => {
+    employeeCrud.delete(req.params.id, req.body)
+    .then(data => {
+        if(data) 
+        res.send(data)
+    else
+        raiseRecord404Error(req, res)
+    })
+    .catch((err) => next(err))
 })
 
 module.exports = router;
