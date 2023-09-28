@@ -10,7 +10,7 @@ const app = express();
 
 // Middleware
 app.use(bodyParser.json());
-app.use('/api/employee', employeeRoutes);
+app.use('/api/employees', employeeRoutes);
 
 
 
