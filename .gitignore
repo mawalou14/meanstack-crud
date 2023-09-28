@@ -2,3 +2,6 @@
 /Notes.txt
 
 node_modules/
+
+environments/
+.env
