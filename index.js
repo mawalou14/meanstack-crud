@@ -1,6 +1,7 @@
 
 const bodyParser = require('body-parser');
 const express = require('express');
+const cors = require('cors');
 
 // local imports
 const connectDb = require('./db.js');
@@ -11,9 +12,9 @@ const app = express();
 
 // Middleware
 app.use(bodyParser.json());
+app.use(cors({origin:'http://localhost:4200/'}));
 app.use('/api/employees', employeeRoutes);
-app.use(errorHandler)
-
+app.use(errorHandler);
 
 
 connectDb()
