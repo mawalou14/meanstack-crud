@@ -12,7 +12,7 @@ const app = express();
 
 // Middleware
 app.use(bodyParser.json());
-app.use(cors({origin:'http://localhost:4200/'}));
+app.use(cors({origin:'http://localhost:4200'}));
 app.use('/api/employees', employeeRoutes);
 app.use(errorHandler);
 
